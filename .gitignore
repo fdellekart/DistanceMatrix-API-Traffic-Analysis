@@ -2,3 +2,4 @@ google_api_key.txt
 __pycache__
 .pytest_cache
 first_api_points.py
+first_connection.py
