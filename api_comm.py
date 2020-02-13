@@ -57,13 +57,26 @@ class DistanceMatrixCommunicator:
 
     @property
     def json_response(self):
+        """Returns response in json formatted string.
+
+        Warning: Store result somewhere. Will Use Distance Matrix API call!!!
+        """
+        self._get_response()
         return self._json_response
 
     @property
     def dict_response(self):
+        """Returns response as dict.
+
+        Warning: Store result somewhere. Will Use Distance Matrix API call!!!
+        """
+        self._get_response()
         return json.loads(self._json_response)
 
     def clear(self):
+        """Sets _origin, _destination, _json_response, _request
+        and _departure_time in self to None.
+        """
         self._origin = None
         self._destination = None
         self._json_response = None
