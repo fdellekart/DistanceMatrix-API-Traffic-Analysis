@@ -11,6 +11,7 @@ class DistanceMatrixCommunicator:
         self._destination = None
         self._request = None
         self._departure_time = None
+        self._json_response = None
 
     @property
     def origin(self):
@@ -50,3 +51,17 @@ class DistanceMatrixCommunicator:
         time_zero = datetime(1970, 1, 1, 0, 0, 0)
         time_delt = time_point - time_zero
         return time_delt.total_seconds()
+
+    def _get_response(self):
+        self._json_response = requests.get(self._request)
+
+    @property
+    def json_response(self):
+        return self._json_response
+
+    @property
+    def dict_response(self):
+        return json.loads(self._json_response)
+
+
+    
