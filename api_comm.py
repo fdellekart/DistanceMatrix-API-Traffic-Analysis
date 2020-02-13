@@ -63,5 +63,12 @@ class DistanceMatrixCommunicator:
     def dict_response(self):
         return json.loads(self._json_response)
 
+    def clear(self):
+        self._origin = None
+        self._destination = None
+        self._json_response = None
+        self._request = None
+        self._departure_time = None
+
 
     
