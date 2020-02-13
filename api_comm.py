@@ -1,5 +1,6 @@
+import requests
+import json
 
-#units=imperial&
 
 class DistanceMatrixCommunicator:
     def __init__(self, api_key_path):
@@ -35,3 +36,7 @@ class DistanceMatrixCommunicator:
             return self._request
         else:
             return self._request
+
+    def get_response(self):
+        self.response = requests.get(self.request)
+        return self.response

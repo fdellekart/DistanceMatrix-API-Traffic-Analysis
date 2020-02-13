@@ -1,6 +1,8 @@
 from api_comm import DistanceMatrixCommunicator
 
+
 communicator = DistanceMatrixCommunicator("google_api_key.txt")
+
 
 def test_init():
     assert isinstance(communicator._api_key, str)
@@ -10,10 +12,13 @@ def test_init():
     assert communicator.destination == None
     assert communicator.request == None
 
+
 def test_getters_setters():
     communicator.origin = "origin"
     communicator.destination = "destination"
 
+    assert communicator.origin =="orgin"
+    assert communicator.destination == "destination"
     assert communicator.request == communicator._api_url.format("origin",
                                                                 "destination",
                                                                 communicator._api_key
