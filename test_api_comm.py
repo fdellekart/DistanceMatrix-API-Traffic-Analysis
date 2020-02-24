@@ -1,14 +1,18 @@
 from datetime import datetime, timedelta
 
 
+import pytest
+
+
 from api_comm import DistanceMatrixCommunicator
 
-
-communicator = DistanceMatrixCommunicator("google_api_key.txt")
 
 origin = {"latitude": "47.066502", "longitude": "15.438346"}
 destination = {"latitude": "47.063286", "longitude": "15.450824"}
 departure_time = datetime(2020, 2, 24, 12, 36)
+
+
+communicator = DistanceMatrixCommunicator("google_api_key.txt")
 
 def test_init():
     assert isinstance(communicator._api_key, str)

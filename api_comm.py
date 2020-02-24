@@ -4,9 +4,12 @@ from datetime import datetime, timedelta
 
 
 class DistanceMatrixCommunicator:
-    def __init__(self, api_key_path):
+    def __init__(self, api_key=None, file_path=True):
         self._api_url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins={},{}&destinations={},{}&departure_time={}&key={}"
-        self._api_key = open(api_key_path, 'r').read()
+        if file_path:
+            self._api_key = open(api_key, 'r').read()
+        else:
+            self._api_key = api_key
         self._origin = None
         self._destination = None
         self._request = None
