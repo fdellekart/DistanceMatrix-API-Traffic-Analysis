@@ -2,6 +2,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
+#{'destination_addresses': [], 'error_message': 'departure_time is in the past. Traffic information is only available for future and current times.', 'origin_addresses': [], 'rows': [], 'status': 'INVALID_REQUEST'}
 
 class DistanceMatrixCommunicator:
     def __init__(self, api_key=None, file_path=True):
@@ -60,10 +61,6 @@ class DistanceMatrixCommunicator:
         else:
             return None
 
-    def get_response(self):
-        self.response = requests.get(self.request)
-        return self.response
-
     def _get_timedelta_from_zero(self, time_point):
         delta = time_point.date() - datetime(1970, 1, 1, 0, 0, 0).date()
         day_delta = delta.days
@@ -86,7 +83,9 @@ class DistanceMatrixCommunicator:
         Warning: Store result somewhere. Will Use Distance Matrix API call!!!
         """
         if self._json_response == None:
-            return self._get_response()
+            resp = self._get_response().json()
+            self._json_response = resp
+            return resp
         return self._json_response
 
     @property
@@ -96,8 +95,9 @@ class DistanceMatrixCommunicator:
         Warning: Store result somewhere. Will Use Distance Matrix API call!!!
         """
         if self._json_response == None:
-            self._get_response()
-        return json.loads(self._json_response)
+            resp = self._get_response().json()
+            self._json_response = resp
+        return json.loads(resp.json())
 
     def clear(self, all=False):
         """Sets  _json_response, _request in self to None.
