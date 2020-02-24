@@ -75,7 +75,9 @@ class DistanceMatrixCommunicator:
         return time_delt.total_seconds()
 
     def _get_response(self):
-        self._json_response = requests.get(self._request)
+        response = self._json_response = requests.get(self._request)
+        print('Performed GET request to Distance Matrix API')
+        return response
 
     @property
     def json_response(self):
@@ -83,7 +85,8 @@ class DistanceMatrixCommunicator:
 
         Warning: Store result somewhere. Will Use Distance Matrix API call!!!
         """
-        self._get_response()
+        if self._json_response == None:
+            return self._get_response()
         return self._json_response
 
     @property
