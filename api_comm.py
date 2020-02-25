@@ -2,7 +2,6 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-#{'destination_addresses': [], 'error_message': 'departure_time is in the past. Traffic information is only available for future and current times.', 'origin_addresses': [], 'rows': [], 'status': 'INVALID_REQUEST'}
 
 class DistanceMatrixCommunicator:
     def __init__(self, api_key=None, file_path=True):
@@ -67,7 +66,8 @@ class DistanceMatrixCommunicator:
         delta_dict = {'days' : day_delta,
                     'hours' : time_point.hour,
                     'minutes' : time_point.minute,
-                    'seconds' : time_point.second}
+                    'seconds' : time_point.second
+                    }
         time_delt = timedelta(**delta_dict)
         return time_delt.total_seconds()
 
@@ -79,8 +79,6 @@ class DistanceMatrixCommunicator:
     @property
     def json_response(self):
         """Returns response in json formatted string.
-
-        Warning: Store result somewhere. Will Use Distance Matrix API call!!!
         """
         if self._json_response == None:
             resp = self._get_response().json()
@@ -91,8 +89,6 @@ class DistanceMatrixCommunicator:
     @property
     def dict_response(self):
         """Returns response as dict.
-
-        Warning: Store result somewhere. Will Use Distance Matrix API call!!!
         """
         if self._json_response == None:
             resp = self._get_response().json()
@@ -113,5 +109,34 @@ class DistanceMatrixCommunicator:
             self._destination = None
             self._departure_time = None
 
+    @staticmethod
+    def point_adder(file_path):
+        header = 'id,latitude,longitude,connected_right,connected_wrong'
+        while True:
+            point_id = input('id:\n')
+            if point_id == 'q':
+                break
+            point = input('latitude,longitude:\n')
+            connected_right = input('Connected point ids right direction "point,point"\n')
+            connected_wrong = input('Connected pint ids wrong direction "point,point"\n')
+            name = input('Name:\n')
+            latitude = point.split(',')[0]
+            longitude = point.split(',')[1]
+            connected_right = connected_right.split(',')
+            connected_wrong = connected_wrong.split(',')
 
-    
+            line = '{},{},{},{},{},{}\n'.format(point_id,
+                                                latitude,
+                                                longitude,
+                                                '-'.join(connected_right),
+                                                '-'.join(connected_wrong),
+                                                name
+                                                )
+
+            try:
+                with open(file_path, 'a') as f:
+                    f.writelines([line])
+            except FileNotFoundError:
+                with open(file_path, 'r') as f:
+                    f.writelines([header, line])
+
