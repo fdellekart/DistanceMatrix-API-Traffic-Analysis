@@ -49,3 +49,8 @@ class Interface:
                         'second' : second}
 
             data.DataModifier.add_todo(**todo_dict)
+
+    @staticmethod
+    def work_todos():
+        modifier = data.DataModifier()
+        modifier.work_todos()
