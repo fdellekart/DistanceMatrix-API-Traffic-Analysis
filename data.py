@@ -10,33 +10,56 @@ import api_comm
 
 
 class DataModifier:
-    def __init__(self, todo_path=r'CSV\departures_todo.csv', done_path=r'CSV\departures_done.csv'):
+    def __init__(self, todo_path=r'CSV\departures_todo.csv', 
+                done_path=r'CSV\departures_done.csv',
+                conjunctions_path=r'CSV\conjunctions.csv'):
         self.todo_path = todo_path
         self.done_path = done_path
+        self.conjunctions_path = conjunctions_path
         self.todos = None
         self.done = None
-        self.load_todos()
+        self.load_todos_and_done()
 
-    @staticmethod
-    def add_point(point_id, latitude, longitude, conn_rightway, conn_wrongway, name, file_path=r'CSV\conjunctions.csv'):
-        header = 'id,latitude,longitude,connected_right,connected_wrong\n'
-        line = '{},{},{},{},{},{}\n'.format(point_id,
-                                            latitude,
-                                            longitude,
-                                            '-'.join(conn_rightway),
-                                            '-'.join(conn_wrongway),
-                                            name
-                                            )
+    def load_todos_and_done(self):
+        """Loads open and done todos from todo_path and done_path
+        Converts json format to dict and puts list of dicts into
+        self.todos and self.done
+        """
+        self._load_todos('todo')
+        self._load_todos('done')
 
-        try:
-            with open(file_path, 'a') as f:
-                f.writelines([line])
-        except IOError:
-            with open(file_path, 'r') as f:
-                f.writelines([header, line])
+    def _load_todos(self, done_or_todo):
+        if done_or_todo == 'todo':
+            path = self.todo_path
+        elif done_or_todo == 'done':
+            path = self.done_path
 
-    @staticmethod
-    def add_todo(year, month, day, hour, minute, second, file_path=r'CSV\departures_todo.csv'):
+        if self._check_file_empty(path):
+            if done_or_todo == 'todo':
+                self.todos = []
+            elif done_or_todo == 'done':
+                self.done = []
+        else:
+            with open(path, 'r') as f:
+                todos = f.read()
+            todos = f.read.split('\n')
+            if done_or_todo == 'todo':
+                self.todos = [json.loads(todo) for todo in todos]
+            elif done_or_todo == 'done':
+                self.done = [json.loads(todo) for todo in todos]
+
+
+    def _check_file_empty(self, path):
+        with open(path, 'r') as f:
+            one_char = f.read(1)
+            if not one_char:
+                return True
+        return False
+
+
+    def write_todo(self, year, month, day, hour, minute, second):
+        """Writes a new todo timestamp to self.todo_path csv in json format
+        """
         todo_dict = {'year' : year,
                     'month' : month,
                     'day' : day,
@@ -46,8 +69,28 @@ class DataModifier:
 
         todo_json = json.dumps(todo_dict)
 
-        with open(file_path, 'a') as f:
+        with open(self.todo_path, 'a') as f:
             f.writelines(['{}\n'.format(todo_json)])
+
+    def write_point(self,point_info_dict):
+        """Takes dict with keys 'point_id', 'latitude', 'longitude',
+        'conn_rightway', 'conn_wrongway' and 'name.
+
+        Writes line to self.conjunctions_path csv
+        """
+        line = self._generate_line(point_info_dict)
+
+        with open(self.conjunctions_path, 'a') as f:
+            f.writelines([line])
+
+    def _generate_line(self, point_info_dict):
+        return '{},{},{},{},{},{}\n'.format(point_info_dict['point_id'],
+                                            point_info_dict['latitude'],
+                                            point_info_dict['longitude'],
+                                            point_info_dict['conn_rightway'],
+                                            point_info_dict['conn_wrongway'],
+                                            point_info_dict['name']
+                                            )
 
     def work_todos(self):
         superblock = block.Block()
@@ -105,14 +148,7 @@ class DataModifier:
                     
         self.write_done()
 
-    def load_todos(self):
-        with open(self.todo_path, 'r') as f:
-            todos = f.read()
-        self.todos = todos.split('\n')
-
-        with open(self.done_path, 'r') as f:
-            todos = f.read()
-        self.done = todos.split('\n')
+    
 
     def write_done(self):
         with open(self.done_path, 'a') as f:
