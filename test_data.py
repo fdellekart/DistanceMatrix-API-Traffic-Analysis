@@ -31,8 +31,6 @@ def test_init():
         assert modifier.done == [json.loads(todo) for todo in done]
 
 def test_write_todos():
-    global test_init
-    todos = modifier.todos
     year = 2020
     month = 12
     day = 4
@@ -53,10 +51,10 @@ def test_write_todos():
                     'minute' : minute2,
                     'second' : second}
     
-    todos.append(todo_dict1)
-    todos.append(todo_dict2)
-
     modifier.write_todo(**todo_dict1)
     modifier.write_todo(**todo_dict2)
     modifier.is_done()
-    test_init()
+    assert modifier.todos == []
+    done_json_list = open(done_path, 'r').read().split('\n')
+    done_dict_list = [json.loads(todo) for todo in done_json_list]
+    assert modifier.done == done_dict_list

@@ -81,33 +81,29 @@ class DataModifier:
                 f.write('\n{}'.format(todo_json))
 
     def is_done(self):
-        self.done = self.todos
+        """sets done to todos and todos to empty list
+        writes done to done_path and empties todo_path
+        """
+        for todo in self.todos:
+            self.done.append(todo)
         self.todos = []
+        print('todos in done:{}'.format(self.todos))
+        print('done in done:{}'.format(self.done))
         self._write_done_and_todos()
         with open(self.todo_path, 'w') as f:
             f.write('')
+        self.load_todos_and_done()
 
     def _write_done_and_todos(self):
-        """
-        """
         todo_json_list = [json.dumps(todo) for todo in self.todos]
         done_json_list = [json.dumps(todo) for todo in self.done]
         todo_string = '\n'.join(todo_json_list)
         done_string = '\n'.join(done_json_list)
-        todo_empty = self._check_file_empty(self.todo_path)
-        done_empty = self._check_file_empty(self.done_path)
-        if todo_empty:
-            with open(self.todo_path, 'w') as f:
-                f.write(todo_string)
-        else:
-            with open(self.todo_path, 'a') as f:
-                f.write('\n{}'.format(todo_string))
-        if done_empty:
-            with open(self.done_path, 'w') as f:
-                f.write(done_string)
-        else:
-            with open(self.done_path, 'a') as f:
-                f.write('\n{}'.format(done_string))
+        with open(self.todo_path, 'w') as f:
+            f.write(todo_string)
+        
+        with open(self.done_path, 'w') as f:
+            f.write(done_string)
 
     def write_point(self,point_info_dict):
         """Takes dict with keys 'point_id', 'latitude', 'longitude',
