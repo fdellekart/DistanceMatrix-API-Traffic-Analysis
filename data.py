@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 
@@ -34,15 +35,16 @@ class DataModifier:
         elif done_or_todo == 'done':
             path = self.done_path
 
-        if self._check_file_empty(path):
+        with open(path, 'r') as f:
+            todos = f.read()
+            todos = todos.split('\n')
+
+        if self._check_file_empty(path) or todos == ['','']:
             if done_or_todo == 'todo':
                 self.todos = []
             elif done_or_todo == 'done':
                 self.done = []
         else:
-            with open(path, 'r') as f:
-                todos = f.read()
-            todos = f.read.split('\n')
             if done_or_todo == 'todo':
                 self.todos = [json.loads(todo) for todo in todos]
             elif done_or_todo == 'done':
@@ -50,15 +52,15 @@ class DataModifier:
 
 
     def _check_file_empty(self, path):
-        with open(path, 'r') as f:
-            one_char = f.read(1)
-            if not one_char:
-                return True
-        return False
+        if os.stat(path).st_size == 0:
+            return True
+        else:
+            return False
 
 
     def write_todo(self, year, month, day, hour, minute, second):
         """Writes a new todo timestamp to self.todo_path csv in json format
+        and appends dict to todos.
         """
         todo_dict = {'year' : year,
                     'month' : month,
@@ -67,10 +69,45 @@ class DataModifier:
                     'minute' : minute,
                     'second' : second}
 
+        self.todos.append(todo_dict)
+
         todo_json = json.dumps(todo_dict)
 
-        with open(self.todo_path, 'a') as f:
-            f.writelines(['{}\n'.format(todo_json)])
+        if self._check_file_empty(self.todo_path):
+            with open(self.todo_path, 'a') as f:
+                f.write(todo_json)
+        else:
+            with open(self.todo_path, 'a') as f:
+                f.write('\n{}'.format(todo_json))
+
+    def is_done(self):
+        self.done = self.todos
+        self.todos = []
+        self._write_done_and_todos()
+        with open(self.todo_path, 'w') as f:
+            f.write('')
+
+    def _write_done_and_todos(self):
+        """
+        """
+        todo_json_list = [json.dumps(todo) for todo in self.todos]
+        done_json_list = [json.dumps(todo) for todo in self.done]
+        todo_string = '\n'.join(todo_json_list)
+        done_string = '\n'.join(done_json_list)
+        todo_empty = self._check_file_empty(self.todo_path)
+        done_empty = self._check_file_empty(self.done_path)
+        if todo_empty:
+            with open(self.todo_path, 'w') as f:
+                f.write(todo_string)
+        else:
+            with open(self.todo_path, 'a') as f:
+                f.write('\n{}'.format(todo_string))
+        if done_empty:
+            with open(self.done_path, 'w') as f:
+                f.write(done_string)
+        else:
+            with open(self.done_path, 'a') as f:
+                f.write('\n{}'.format(done_string))
 
     def write_point(self,point_info_dict):
         """Takes dict with keys 'point_id', 'latitude', 'longitude',
@@ -145,15 +182,8 @@ class DataModifier:
                                                                 todo_dt.second)
                         with open(filename, 'a') as f:
                             f.writelines(['{},{},{}\n'.format(communicator.json_response, json.dumps(origin), json.dumps(destination))])
-                    
-        self.write_done()
+        
 
     
 
-    def write_done(self):
-        with open(self.done_path, 'a') as f:
-            string = '\n'.join(self.done)
-            f.write('{}\n'.format(string))
-        self.todos = None
-        with open(self.todo_path, 'w') as f:
-            f.write('')
+    
