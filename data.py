@@ -4,10 +4,12 @@ from datetime import datetime
 
 
 import numpy as np
+import pandas as pd
 
 
 import block
 import api_comm
+import block
 
 
 class DataModifier:
@@ -19,6 +21,12 @@ class DataModifier:
         self.conjunctions_path = conjunctions_path
         self.todos = None
         self.done = None
+        self.trip_data = pd.DataFrame(columns=['origin',
+                                        'destination',
+                                        'departure_time',
+                                        'distance',
+                                        'time_in_traffic'
+                                        ])
         self.load_todos_and_done()
 
     def load_todos_and_done(self):
@@ -125,61 +133,98 @@ class DataModifier:
                                             point_info_dict['name']
                                             )
 
-    def work_todos(self):
+    def get_data(self):
         superblock = block.Block()
+        for todo in self.todos:
+            todo_dt = datetime(todo['year'],
+                                todo['month'],
+                                todo['day'],
+                                todo['hour'],
+                                todo['minute'],
+                                todo['second']
+                                )
+            todo_file_path = self._todo_filename(todo_dt)
+            self._write_response_csv_header(todo_file_path)
+            for origin_id in superblock.conjunctions.index:
+                for destination_id in superblock.conjunctions.at[origin_id, 'connected_right']:
+                    dict_response = self._get_data_one_point(int(origin_id),
+                                                            int(destination_id),
+                                                            todo_dt,
+                                                            superblock)
+                    dict_response_unpacked = self._unpack_api_response(dict_response)
+                    csv_line = self._generate_response_csv_line(dict_response_unpacked,
+                                                                origin_id,
+                                                                destination_id
+                                                                )
+                    self._write_response(csv_line, todo_file_path)
+        self.is_done()
+
+    def _write_response(self, csv_line, file_path):
+        with open(file_path, 'a') as f:
+            f.write(csv_line)
+
+    def _generate_response_csv_line(self, dict_response, origin_id, destination_id):
+        info_list = [origin_id,
+                    destination_id,
+                    dict_response['origin_adress'],
+                    dict_response['destination_adress'],
+                    dict_response['distance'],
+                    dict_response['duration'],
+                    dict_response['duration_in_traffic']
+                    ]
+        return '\n' + ','.join([str(x) for x in info_list])
+
+    def _write_response_csv_header(self, file_path):
+        header = 'origin_id,destination_id,origin_adress,destination_adress,distance,duration,duration_in_traffic'
+        with open(file_path, 'w') as f:
+            f.write(header)
+
+    def _get_data_one_point(self, origin_id, destination_id, todo_dt, conj_block):
         communicator = api_comm.DistanceMatrixCommunicator('google_api_key.txt')
 
-        for todo in self.todos:
-            if todo in self.done:
-                continue
-            dt_dict = json.loads(todo)
-            dt_dict_int = {key:int(val) for key, val in dt_dict.items()}
-            todo_dt = datetime(**dt_dict_int)
-            communicator.departure_time = todo_dt
-            for lat, lon in zip(superblock.conjunctions['latitude'].values, superblock.conjunctions['longitude'].values):
-                origin = {'latitude' : lat,
-                        'longitude' : lon
-                        }
-                communicator.origin = origin
-                for connections in superblock.conjunctions['connected_right']:
-                    if connections == np.nan or connections == 'nan':
-                        continue
-                    for con in connections:
-                        if con == np.nan or connections == 'nan':
-                            continue
-                        destination = {'latitude' : superblock.conjunctions.at[int(con),'latitude'],
-                                        'longitude' : superblock.conjunctions.at[int(con),'longitude']
-                                        }
-                        communicator.destination = destination
-                        filename = 'CSV\\responses\\{}-{}-{}-{}-{}-{}.csv'.format(todo_dt.year,
-                                                                todo_dt.month,
-                                                                todo_dt.day,
-                                                                todo_dt.hour,
-                                                                todo_dt.minute,
-                                                                todo_dt.second)
-                        with open(filename, 'a') as f:
-                            f.writelines(['{},{},{}\n'.format(communicator.json_response, json.dumps(origin), json.dumps(destination))])
+        origin_lat = conj_block.conjunctions.at[origin_id, 'latitude']
+        origin_lon = conj_block.conjunctions.at[origin_id, 'longitude']
+        destination_lat = conj_block.conjunctions.at[destination_id, 'latitude']
+        destination_lon = conj_block.conjunctions.at[destination_id, 'longitude']
 
-                for connections in superblock.conjunctions['connected_wrong']:
-                    if connections == np.nan or connections == 'nan':
-                        continue
-                    for con in connections:
-                        if con == np.nan or con == 'nan':
-                            continue
-                        destination = {'latitude' : superblock.conjunctions.at[int(con),'latitude'],
-                                        'longitude' : superblock.conjunctions.at[int(con),'longitude']
-                                        }
-                        communicator.destination = destination
-                        filename = 'CSV\\responses\\{}-{}-{}-{}-{}-{}.csv'.format(todo_dt.year,
-                                                                todo_dt.month,
-                                                                todo_dt.day,
-                                                                todo_dt.hour,
-                                                                todo_dt.minute,
-                                                                todo_dt.second)
-                        with open(filename, 'a') as f:
-                            f.writelines(['{},{},{}\n'.format(communicator.json_response, json.dumps(origin), json.dumps(destination))])
-        
+        origin = {'latitude' : origin_lat, 'longitude' : origin_lon}
+        destination = {'latitude' : destination_lat, 'longitude': destination_lon}
 
-    
+        communicator.origin = origin
+        communicator.destination = destination
+        communicator.departure_time = todo_dt
 
-    
+        return communicator.dict_response
+
+    #{'destination_addresses': ['Grazbachgasse 34, 8010 Graz, Austria'],
+    # 'origin_addresses': ['Grazbachgasse 40, 8010 Graz, Austria'],
+    # 'rows': [{'elements': [{'distance': {'text': '80 m', 'value': 80},
+    #                           'duration': {'text': '1 min', 'value': 14},
+    #                           'duration_in_traffic': {'text': '1 min', 'value': 13},
+    #                            'status': 'OK'}]}], 'status': 'OK'}
+
+    def _unpack_api_response(self, dict_response):
+        print(dict_response)
+        destination_adress = dict_response['destination_addresses'][0]
+        origin_adress = dict_response['origin_addresses'][0]
+        info = dict_response['rows'][0]['elements'][0]
+        distance = info['distance']['value']
+        duration = info['duration']['value']
+        duration_in_traffic = info['duration_in_traffic']['value']
+
+        return {'destination_adress' : destination_adress,
+                'origin_adress' : origin_adress,
+                'distance' : distance,
+                'duration' : duration,
+                'duration_in_traffic' : duration_in_traffic
+                }
+
+    def _todo_filename(self, todo_dt):
+        name = '-'.join([str(x) for x in [todo_dt.year,
+                        todo_dt.month,
+                        todo_dt.day,
+                        todo_dt.hour,
+                        todo_dt.minute,
+                        todo_dt.second
+                        ]])
+        return 'CSV\\responses\\' + name + '.csv'

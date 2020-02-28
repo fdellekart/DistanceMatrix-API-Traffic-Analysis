@@ -92,8 +92,8 @@ class DistanceMatrixCommunicator:
         """
         if self._json_response == None:
             resp = self._get_response().json()
-            self._json_response = resp
-        return json.loads(resp.json())
+            self._json_response = json.dumps(resp)
+        return resp
 
     def clear(self, all=False):
         """Sets  _json_response, _request in self to None.
