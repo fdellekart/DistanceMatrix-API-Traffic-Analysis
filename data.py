@@ -9,16 +9,19 @@ import pandas as pd
 
 import block
 import api_comm
-import block
 
 
 class DataModifier:
     def __init__(self, todo_path=r'CSV\departures_todo.csv', 
                 done_path=r'CSV\departures_done.csv',
-                conjunctions_path=r'CSV\conjunctions.csv'):
+                conjunctions_path=r'CSV\conjunctions.csv',
+                responses_path='CSV\\responses\\',
+                max_min_path='CSV\\max_min.csv'):
         self.todo_path = todo_path
         self.done_path = done_path
         self.conjunctions_path = conjunctions_path
+        self.responses_path = responses_path
+        self.max_min_path = max_min_path
         self.todos = None
         self.done = None
         self.trip_data = pd.DataFrame(columns=['origin',
@@ -28,6 +31,9 @@ class DataModifier:
                                         'time_in_traffic'
                                         ])
         self.load_todos_and_done()
+        self._max_speed = None
+        self._min_speed = None
+        self.block = block.Block(conjunctions_path=conjunctions_path)
 
     def load_todos_and_done(self):
         """Loads open and done todos from todo_path and done_path
@@ -95,8 +101,6 @@ class DataModifier:
         for todo in self.todos:
             self.done.append(todo)
         self.todos = []
-        print('todos in done:{}'.format(self.todos))
-        print('done in done:{}'.format(self.done))
         self._write_done_and_todos()
         with open(self.todo_path, 'w') as f:
             f.write('')
@@ -196,17 +200,14 @@ class DataModifier:
 
         return communicator.dict_response
 
-    #{'destination_addresses': ['Grazbachgasse 34, 8010 Graz, Austria'],
-    # 'origin_addresses': ['Grazbachgasse 40, 8010 Graz, Austria'],
-    # 'rows': [{'elements': [{'distance': {'text': '80 m', 'value': 80},
-    #                           'duration': {'text': '1 min', 'value': 14},
-    #                           'duration_in_traffic': {'text': '1 min', 'value': 13},
-    #                            'status': 'OK'}]}], 'status': 'OK'}
-
     def _unpack_api_response(self, dict_response):
         print(dict_response)
         destination_adress = dict_response['destination_addresses'][0]
         origin_adress = dict_response['origin_addresses'][0]
+        dest_list = destination_adress.split(',')
+        orig_list = origin_adress.split(',')
+        destination_adress = ';'.join(dest_list)
+        origin_adress = ';'.join(orig_list)
         info = dict_response['rows'][0]['elements'][0]
         distance = info['distance']['value']
         duration = info['duration']['value']
@@ -227,4 +228,34 @@ class DataModifier:
                         todo_dt.minute,
                         todo_dt.second
                         ]])
-        return 'CSV\\responses\\' + name + '.csv'
+        return self.responses_path + name + '.csv'
+
+    @property
+    def lowest_speed(self):
+        if self._min_speed == None:
+            speed = 1000
+            list_responses_dir = os.listdir(self.responses_path)
+            for file in list_responses_dir:
+                data = pd.read_csv(self.responses_path+file, engine='python')
+                speed_series = data.loc[:,'distance']/data.loc[:,'duration_in_traffic']
+                for v in speed_series:
+                    if v < speed:
+                        speed = v
+            return speed
+        else:
+            return self._min_speed
+
+    @property
+    def highest_speed(self):
+        if self._max_speed == None:
+            speed = 0
+            list_responses_dir = os.listdir(self.responses_path)
+            for file in list_responses_dir:
+                data = pd.read_csv(self.responses_path+file, engine='python')
+                speed_series = data.loc[:,'distance']/data.loc[:,'duration_in_traffic']
+                for v in speed_series:
+                    if v > speed:
+                        speed = v
+            return speed
+        else:
+            return self._max_speed
