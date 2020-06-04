@@ -1,5 +1,6 @@
 import json
 import os
+from copy import deepcopy
 from datetime import datetime
 
 
@@ -259,3 +260,38 @@ class DataModifier:
             return speed
         else:
             return self._max_speed
+
+    def streets_min_max(self):
+        list_responses_dir = os.listdir(self.responses_path)
+        min_max_df = pd.read_csv(self.responses_path + list_responses_dir[0], engine='python')
+        min_max_df.drop(labels=['origin_adress', 'destination_adress', 'distance','duration', 'duration_in_traffic'],
+                        axis=1,
+                        inplace=True)
+        min_max_df.insert(2, 'max_duration', 0)
+        min_max_df.insert(3, 'min_duration', 1000)
+
+        for file in list_responses_dir:
+            response = pd.read_csv(self.responses_path+file, engine='python')
+            max_duration_series = min_max_df.loc[:,'max_duration']
+            min_duration_series = min_max_df.loc[:,'min_duration']
+            gt_max = response.loc[:,'duration_in_traffic'].gt(max_duration_series)
+            lt_min = response.loc[:,'duration_in_traffic'].lt(min_duration_series)
+            for row, gt in zip(max_duration_series.iteritems(), gt_max):
+                if gt:
+                    min_max_df.at[row[0],'max_duration'] = response.at[row[0],'duration_in_traffic']
+            for row, lt in zip(min_duration_series.iteritems(), lt_min):
+                if lt:
+                    min_max_df.at[row[0],'min_duration'] = response.at[row[0], 'duration_in_traffic']
+        min_max_df.to_csv(self.max_min_path)
+
+    def get_min_duration(self, origin, destination):
+        max_min_df = pd.read_csv(self.max_min_path)
+        for row in max_min_df.iterrows():
+            if row[1]['origin_id'] == origin and row[1]['destination_id'] == destination:
+                return row[1]['min_duration']
+
+    def get_max_duration(self, origin, destination):
+        max_min_df = pd.read_csv(self.max_min_path)
+        for row in max_min_df.iterrows():
+            if row[1]['origin_id'] == origin and row[1]['destination_id'] == destination:
+                return row[1]['max_duration']

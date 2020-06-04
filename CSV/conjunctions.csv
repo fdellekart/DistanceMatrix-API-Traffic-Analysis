@@ -1,0 +1,31 @@
+id,latitude,longitude,connected_right,connected_wrong,name
+1,47.064472,15.442661,2,30,Grazbachgasse/Conrad von Hoetzendorf
+2,47.065051,15.443260,3-28,1,Grazbachgasse/Maygasse
+3,47.065711,15.444331,4,29-2,Grazbachgasse/Klosterwiesgasse
+4,47.066419,15.446832,5-16,3,Dietrichsteinplatz/Muenzgrabenstrasze
+5,47.066642,15.448248,4-6-8,,Dietrichsteinplatz/Schoergelgasse
+6,47.067368,15.450024,5-7,,Spabersbachgasse/Mandellstrasze
+7,47.066933,15.451008,6-9-10,,Mandellstra�e/Brockmanngasse
+8,47.066473,15.448841,9-14,5,Schoergelgasse/Kopernikusgasse
+9,47.066359,15.450740,7-10-13,8,Schoergelgasse/Brockmanngasse
+10,47.066165,15.452674,7-11,9,Mandellstrasze/Sch�rgelgasse
+11,47.064627,15.454870,10-19,,Petersgasse/Steyrergasse
+12,47.065127,15.451662,18,13,Kopernikusgasse/Stremayrgasse
+13,47.065388,15.450342,9-14-12-17,,Brockmanngasse/Kopernikusgasse
+14,47.065605,15.448993,8-13-16,,Kronesgasse/Kopernikusgasse
+15,47.065082,15.447448,21-29,16,Schieszstattgasse/Kastellfeldgasse
+16,47.065067,15.448034,4-15-14-17,,Muenzgrabenstrasze/Kronesgasse
+17,47.064068,15.449759,13-16-18-21,,Muenzgrabenstra�e/Brockmanngasse
+18,47.063660,15.450827,17-19,12,Muenzgrabenstrasze/Stremayrgasse
+19,47.063338,15.450988,18-11-20,,Muenzgrabenstrasze/Steyrergasse
+20,47.062647,15.448775,19-21-23,,Kastellfeldgasse/Steyrergasse
+21,47.063474,15.448252,15-17-20-22,,Kastellfeldgasse/Brockmanngasse
+22,47.062870,15.446180,21-24-29,23,Brockmanngasse/Klosterwiesgasse
+23,47.061975,15.446733,20-22-25,,Klosterwiesgasse/Steyrergasse
+25,47.061610,15.445521,23-26,24,Maygasse/Steyrergasse
+24,47.062489,15.445018,22-25-27,28,Maygasse/Brockmanngasse
+26,47.061211,15.444277,27-25,,Conrad von Hoetzendorf/Steyrergasse
+27,47.062150,15.443802,26-30,,Conrad von Hoetzendorf/Brockmanngasse
+28,47.063966,15.444218,24-2,29,Schieszstattgasse/Maygasse
+29,47.064515,15.445092,28-3,15-22,Schieszstattgasse/Klosterwiesgasse
+30,47.063747,15.442900,1-27,,Conrad von Hoetzendorf/Schieszstattgasse

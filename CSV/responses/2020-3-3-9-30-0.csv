@@ -1,0 +1,75 @@
+origin_id,destination_id,origin_adress,destination_adress,distance,duration,duration_in_traffic
+1,2,Grazbachgasse 40; 8010 Graz; Austria,Grazbachgasse 34; 8010 Graz; Austria,80,14,15
+2,3,Grazbachgasse 34; 8010 Graz; Austria,Grazbachgasse 33; 8010 Graz; Austria,110,19,20
+2,28,Grazbachgasse 34; 8010 Graz; Austria,Maygasse 15 / Ecke; Schießstattgasse; 8010 Graz; Austria,142,25,29
+3,4,Grazbachgasse 33; 8010 Graz; Austria,Dietrichsteinplatz (Münzgrabenstraße); 8010 Graz; Austria,208,37,38
+4,5,Dietrichsteinplatz (Münzgrabenstraße); 8010 Graz; Austria,Dietrichsteinpl. 9a; 8010 Graz; Austria,111,20,21
+4,16,Dietrichsteinplatz (Münzgrabenstraße); 8010 Graz; Austria,Münzgrabenstraße 13; 8010 Graz; Austria,177,31,36
+5,4,Dietrichsteinpl. 9a; 8010 Graz; Austria,Dietrichsteinplatz (Münzgrabenstraße); 8010 Graz; Austria,111,27,30
+5,6,Dietrichsteinpl. 9a; 8010 Graz; Austria,Mandellstraße 15; 8010 Graz; Austria,158,38,40
+5,8,Dietrichsteinpl. 9a; 8010 Graz; Austria,Schörgelgasse 3; 8010 Graz; Austria,49,8,8
+6,5,Mandellstraße 15; 8010 Graz; Austria,Dietrichsteinpl. 9a; 8010 Graz; Austria,158,30,29
+6,7,Mandellstraße 15; 8010 Graz; Austria,Mandellstraße 27; 8010 Graz; Austria,87,20,19
+7,6,Mandellstraße 27; 8010 Graz; Austria,Mandellstraße 15; 8010 Graz; Austria,87,26,28
+7,9,Mandellstraße 27; 8010 Graz; Austria,Schörgelgasse 19; 8010 Graz; Austria,67,13,12
+7,10,Mandellstraße 27; 8010 Graz; Austria,Felix-Dahn-Platz 1; 8010 Graz; Austria,152,25,27
+8,9,Schörgelgasse 3; 8010 Graz; Austria,Schörgelgasse 19; 8010 Graz; Austria,145,26,24
+8,14,Schörgelgasse 3; 8010 Graz; Austria,Kronesgasse 5; 8010 Graz; Austria,98,21,20
+9,7,Schörgelgasse 19; 8010 Graz; Austria,Mandellstraße 27; 8010 Graz; Austria,67,20,21
+9,10,Schörgelgasse 19; 8010 Graz; Austria,Felix-Dahn-Platz 1; 8010 Graz; Austria,161,32,28
+9,13,Schörgelgasse 19; 8010 Graz; Austria,Kopernikusgasse 19; 8010 Graz; Austria,113,20,19
+10,7,Felix-Dahn-Platz 1; 8010 Graz; Austria,Mandellstraße 27; 8010 Graz; Austria,152,26,27
+10,11,Felix-Dahn-Platz 1; 8010 Graz; Austria,Steyrergasse 1; 8010 Graz; Austria,244,44,44
+11,10,Steyrergasse 1; 8010 Graz; Austria,Felix-Dahn-Platz 1; 8010 Graz; Austria,244,40,37
+11,19,Steyrergasse 1; 8010 Graz; Austria,Graz Neue Technik; 8010 Graz; Austria,328,59,59
+12,18,Kopernikusgasse 27; 8010 Graz; Austria,Münzgrabenstraße 42; 8010 Graz; Austria,182,54,53
+13,9,Kopernikusgasse 19; 8010 Graz; Austria,Schörgelgasse 19; 8010 Graz; Austria,113,24,25
+13,14,Kopernikusgasse 19; 8010 Graz; Austria,Kronesgasse 5; 8010 Graz; Austria,104,21,20
+13,12,Kopernikusgasse 19; 8010 Graz; Austria,Kopernikusgasse 27; 8010 Graz; Austria,106,25,25
+13,17,Kopernikusgasse 19; 8010 Graz; Austria,Brockmanngasse 36; 8010 Graz; Austria,153,31,29
+14,8,Kronesgasse 5; 8010 Graz; Austria,Schörgelgasse 3; 8010 Graz; Austria,98,19,18
+14,13,Kronesgasse 5; 8010 Graz; Austria,Kopernikusgasse 19; 8010 Graz; Austria,104,24,23
+14,16,Kronesgasse 5; 8010 Graz; Austria,Münzgrabenstraße 13; 8010 Graz; Austria,97,21,20
+15,21,Schießstattgasse 4a; 8010 Graz; Austria,Brockmanngasse 46; 8010 Graz; Austria,191,33,32
+15,29,Schießstattgasse 4a; 8010 Graz; Austria,Klosterwiesgasse 32; 8010 Graz; Austria,190,49,48
+16,4,Münzgrabenstraße 13; 8010 Graz; Austria,Dietrichsteinplatz (Münzgrabenstraße); 8010 Graz; Austria,177,50,54
+16,15,Münzgrabenstraße 13; 8010 Graz; Austria,Schießstattgasse 4a; 8010 Graz; Austria,54,13,13
+16,14,Münzgrabenstraße 13; 8010 Graz; Austria,Kronesgasse 5; 8010 Graz; Austria,97,18,17
+16,17,Münzgrabenstraße 13; 8010 Graz; Austria,Brockmanngasse 36; 8010 Graz; Austria,179,25,26
+17,13,Brockmanngasse 36; 8010 Graz; Austria,Kopernikusgasse 19; 8010 Graz; Austria,153,26,26
+17,16,Brockmanngasse 36; 8010 Graz; Austria,Münzgrabenstraße 13; 8010 Graz; Austria,179,28,30
+17,18,Brockmanngasse 36; 8010 Graz; Austria,Münzgrabenstraße 42; 8010 Graz; Austria,93,18,18
+17,21,Brockmanngasse 36; 8010 Graz; Austria,Brockmanngasse 46; 8010 Graz; Austria,138,33,33
+18,17,Münzgrabenstraße 42; 8010 Graz; Austria,Brockmanngasse 36; 8010 Graz; Austria,93,17,16
+18,19,Münzgrabenstraße 42; 8010 Graz; Austria,Graz Neue Technik; 8010 Graz; Austria,36,8,7
+19,18,Graz Neue Technik; 8010 Graz; Austria,Münzgrabenstraße 42; 8010 Graz; Austria,36,6,6
+19,11,Graz Neue Technik; 8010 Graz; Austria,Steyrergasse 1; 8010 Graz; Austria,328,53,52
+19,20,Graz Neue Technik; 8010 Graz; Austria,Kastellfeldgasse 34; 8010 Graz; Austria,184,29,28
+20,19,Kastellfeldgasse 34; 8010 Graz; Austria,Graz Neue Technik; 8010 Graz; Austria,184,35,30
+20,21,Kastellfeldgasse 34; 8010 Graz; Austria,Brockmanngasse 46; 8010 Graz; Austria,100,22,22
+20,23,Kastellfeldgasse 34; 8010 Graz; Austria,Steyrergasse 73; 8010 Graz; Austria,172,21,20
+21,15,Brockmanngasse 46; 8010 Graz; Austria,Schießstattgasse 4a; 8010 Graz; Austria,191,40,40
+21,17,Brockmanngasse 46; 8010 Graz; Austria,Brockmanngasse 36; 8010 Graz; Austria,138,36,33
+21,20,Brockmanngasse 46; 8010 Graz; Austria,Kastellfeldgasse 34; 8010 Graz; Austria,100,19,19
+21,22,Brockmanngasse 46; 8010 Graz; Austria,Klosterwiesgasse 51; 8010 Graz; Austria,173,46,48
+22,21,Klosterwiesgasse 51; 8010 Graz; Austria,Brockmanngasse 46; 8010 Graz; Austria,732,148,142
+22,24,Klosterwiesgasse 51; 8010 Graz; Austria,Brockmanngasse 70; 8010 Graz; Austria,466,90,85
+22,29,Klosterwiesgasse 51; 8010 Graz; Austria,Klosterwiesgasse 32; 8010 Graz; Austria,200,36,28
+23,20,Steyrergasse 73; 8010 Graz; Austria,Kastellfeldgasse 34; 8010 Graz; Austria,172,21,22
+23,22,Steyrergasse 73; 8010 Graz; Austria,Klosterwiesgasse 51; 8010 Graz; Austria,108,23,25
+23,25,Steyrergasse 73; 8010 Graz; Austria,Steyrergasse 90; 8010 Graz; Austria,101,14,15
+25,23,Steyrergasse 90; 8010 Graz; Austria,Steyrergasse 73; 8010 Graz; Austria,101,15,15
+25,26,Steyrergasse 90; 8010 Graz; Austria,Steyrergasse; 8010 Graz; Austria,108,29,28
+24,22,Brockmanngasse 70; 8010 Graz; Austria,Klosterwiesgasse 51; 8010 Graz; Austria,99,32,34
+24,25,Brockmanngasse 70; 8010 Graz; Austria,Steyrergasse 90; 8010 Graz; Austria,105,22,20
+24,27,Brockmanngasse 70; 8010 Graz; Austria,Conrad-von-Hötzendorf-Straße 23; 8010 Graz; Austria,323,75,74
+26,27,Steyrergasse; 8010 Graz; Austria,Conrad-von-Hötzendorf-Straße 23; 8010 Graz; Austria,110,20,26
+26,25,Steyrergasse; 8010 Graz; Austria,Steyrergasse 90; 8010 Graz; Austria,508,135,138
+27,26,Conrad-von-Hötzendorf-Straße 23; 8010 Graz; Austria,Steyrergasse; 8010 Graz; Austria,110,22,22
+27,30,Conrad-von-Hötzendorf-Straße 23; 8010 Graz; Austria,Conrad-von-Hötzendorf-Straße 6; 8010 Graz; Austria,190,36,42
+28,24,Maygasse 15 / Ecke; Schießstattgasse; 8010 Graz; Austria,Brockmanngasse 70; 8010 Graz; Austria,173,30,32
+28,2,Maygasse 15 / Ecke; Schießstattgasse; 8010 Graz; Austria,Grazbachgasse 34; 8010 Graz; Austria,142,39,38
+29,28,Klosterwiesgasse 32; 8010 Graz; Austria,Maygasse 15 / Ecke; Schießstattgasse; 8010 Graz; Austria,90,18,18
+29,3,Klosterwiesgasse 32; 8010 Graz; Austria,Grazbachgasse 33; 8010 Graz; Austria,146,33,23
+30,1,Conrad-von-Hötzendorf-Straße 6; 8010 Graz; Austria,Grazbachgasse 40; 8010 Graz; Austria,82,22,23
+30,27,Conrad-von-Hötzendorf-Straße 6; 8010 Graz; Austria,Conrad-von-Hötzendorf-Straße 23; 8010 Graz; Austria,190,31,33
